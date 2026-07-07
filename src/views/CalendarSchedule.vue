@@ -230,7 +230,6 @@ const initWxShare = async () => {
       })
     })
   } catch (err) {
-    alert('微信签名获取失败'+err)
     console.error('微信签名获取失败', err)
   }
 }
