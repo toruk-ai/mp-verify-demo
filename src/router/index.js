@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ActivityShare from '../views/ActivityShare.vue'
 import CalendarSchedule from '../views/CalendarSchedule.vue'
 
 
