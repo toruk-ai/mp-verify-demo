@@ -55,7 +55,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 
 // 排班基准日 2026-05-06
-const baseDate = new Date(2026, 4, 6)
+const baseDate = new Date(2026, 9, 7)
 // 四班循环
 const shifts = ['白班', '晚班', '出班', '助班']
 // 星期文案
@@ -182,6 +182,27 @@ const nextMonth = () => {
   fetchHolidays(year.value)
 }
 
+// ====================== 2、OG 分享卡片标签适配 ======================
+// 动态维护 head 中的 og: meta 标签，URL/图片自动适配当前部署域名
+const updateOGMeta = () => {
+  const metaDefs = [
+    ['og:title', '排班日历'],
+    ['og:description', '查看排班日历，获取排班信息，节假日安排'],
+    ['og:image', window.location.origin + '/static/image/equipmentinstall/share_cover.png'],
+    ['og:url', window.location.href.split('#')[0]],
+    ['og:type', 'website']
+  ]
+  metaDefs.forEach(([property, content]) => {
+    let el = document.querySelector(`meta[property="${property}"]`)
+    if (!el) {
+      el = document.createElement('meta')
+      el.setAttribute('property', property)
+      document.head.appendChild(el)
+    }
+    el.setAttribute('content', content)
+  })
+}
+
 // ====================== 3、微信JS-SDK分享核心方法 ======================
 const initWxShare = async () => {
   const currentUrl = window.location.href.split('#')[0]
@@ -237,6 +258,7 @@ const initWxShare = async () => {
 // 初始化加载当年节假日
 onMounted(() => {
   fetchHolidays(year.value)
+  updateOGMeta()
   initWxShare()
 })
 watch(year, (y) => fetchHolidays(y))
